@@ -11,7 +11,7 @@ interface ICard {
 }
 
 const Card = ({ title, desc, rating, username, createdAt }: ICard) => {
-  console.log(rating, username);
+  // console.log(rating, username);
 
   return (
     <div className="card">
