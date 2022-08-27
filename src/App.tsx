@@ -4,7 +4,7 @@ import "./app.css";
 function App(): JSX.Element {
   return (
     <div className="app">
-      <h2>Hello, React!</h2>
+      <h2>Hello, React Map!</h2>
       <MapComponent />
     </div>
   );

@@ -1,18 +1,35 @@
-import Map from "react-map-gl";
+import { useState } from "react";
+import MapGL, { Marker, Popup } from "react-map-gl";
+import { Place } from "@mui/icons-material";
+import Card from "components/Card/Card";
 
-const MapComponent = () => {
+const Map = () => {
+  const [viewport, setViewport] = useState({
+    latitude: 50.04,
+    longitude: 17.07,
+    zoom: 4,
+  });
+
   return (
-    <Map
-      mapboxAccessToken={process.env.MAP_KEY}
-      initialViewState={{
-        longitude: 17,
-        latitude: 46,
-        zoom: 4,
-      }}
-      style={{ width: "100%", height: "calc(100vh - 120px)" }}
-      mapStyle="mapbox://styles/mapbox/streets-v9"
-    />
+    <div className="map-wrapper">
+      <MapGL
+        mapboxApiAccessToken={process.env.MAP_KEY}
+        {...viewport}
+        onViewportChange={(next: any) => setViewport(next)}
+        mapStyle="mapbox://styles/mapbox/streets-v9"
+        width="100%"
+        height="100%"
+        transitionDuration={20}
+      >
+        <Marker latitude={50.2} longitude={14.4} offsetLeft={-3.5 * viewport.zoom} offsetTop={-7 * viewport.zoom}>
+          <Place style={{ fontSize: viewport.zoom * 7, color: "slateblue" }} />
+        </Marker>
+        <Popup latitude={50.2} longitude={14.4} closeButton={true} closeOnClick={false} anchor="left">
+          <Card />
+        </Popup>
+      </MapGL>
+    </div>
   );
 };
 
-export default MapComponent;
+export default Map;
