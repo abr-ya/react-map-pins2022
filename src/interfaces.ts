@@ -1,7 +1,11 @@
-export interface IUser {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  gender: string;
+export interface IPin {
+  _id: string;
+  username: string;
+  title: string;
+  desc: string;
+  rating: number;
+  long: number;
+  lat: number;
+  createdAt: string;
+  updatedAt: string;
 }

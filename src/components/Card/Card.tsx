@@ -1,15 +1,24 @@
 import { Star } from "@mui/icons-material";
+import { format } from "timeago.js";
 import "./card.css";
 
-const Card = () => {
+interface ICard {
+  title: string;
+  desc: string;
+  rating: number;
+  username: string;
+  createdAt: string;
+}
+
+const Card = ({ title, desc, rating, username, createdAt }: ICard) => {
+  console.log(rating, username);
+
   return (
     <div className="card">
       <label>Place</label>
-      <h4 className="place">Prague Zoo</h4>
+      <h4 className="place">{title}</h4>
       <label>Review</label>
-      <p className="description">
-        The zoo is rated as the seventh best zoo in the world by Forbes Travel Guide in 2007
-      </p>
+      <p className="description">{desc}</p>
       <label>Rating</label>
       <div className="stars">
         <Star className="star" />
@@ -19,8 +28,8 @@ const Card = () => {
         <Star />
       </div>
       <label>Information</label>
-      <span className="username">Created by User</span>
-      <span className="date">1 hour ago</span>
+      <span className="username">Created by {username}</span>
+      <span className="date">{format(createdAt)}</span>
     </div>
   );
 };
