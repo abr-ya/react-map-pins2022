@@ -28,8 +28,10 @@ const Card = ({ title, desc, rating, username, createdAt }: ICard) => {
         <Star />
       </div>
       <label>Information</label>
-      <span className="username">Created by {username}</span>
-      <span className="date">{format(createdAt)}</span>
+      <div>
+        <span className="username">Created by {username} &nbsp;</span>
+        <span className="date">{format(createdAt)}</span>
+      </div>
     </div>
   );
 };

@@ -4,8 +4,9 @@ import "regenerator-runtime/runtime";
 import "./body.css";
 import App from "./App";
 
-ReactDOM.createRoot(document.getElementById("root") as Element).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-);
+// todo fix it
+// remove <React.StrictMode> to fix double hadler map click Bug!!!
+/* <React.StrictMode>
+  <App />
+</React.StrictMode>, */
+ReactDOM.createRoot(document.getElementById("root") as Element).render(<App />);

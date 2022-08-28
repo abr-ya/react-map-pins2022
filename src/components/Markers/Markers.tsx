@@ -11,6 +11,7 @@ interface IMarker {
 
 const Markers = ({ zoom }: IMarker) => {
   const [pins, setPins] = useState<IPin[]>([]);
+  const [active, setActive] = useState(null);
 
   const getPins = async () => {
     const newPins: IPin[] = await getAllPins();
@@ -22,8 +23,9 @@ const Markers = ({ zoom }: IMarker) => {
     getPins();
   }, []);
 
-  const markerClickHandler = () => {
-    console.log("!");
+  const markerClickHandler = (id) => {
+    console.log(id);
+    setActive(id);
   };
 
   if (pins.length === 0) return <span>markers loading...</span>;
@@ -35,13 +37,25 @@ const Markers = ({ zoom }: IMarker) => {
           <div key={pin._id}>
             <Marker latitude={pin.lat} longitude={pin.long} offsetLeft={-3.5 * zoom} offsetTop={-7 * zoom}>
               <Place
-                style={{ fontSize: zoom * 7, color: "slateblue", cursor: "pointer" }}
-                onClick={markerClickHandler}
+                style={{
+                  fontSize: zoom * 7,
+                  color: pin.username === "Jane" ? "tomato" : "slateblue",
+                  cursor: "pointer",
+                }}
+                onClick={() => markerClickHandler(pin._id)}
               />
             </Marker>
-            <Popup latitude={pin.lat} longitude={pin.long} closeButton={true} closeOnClick={false}>
-              <Card {...pin} />
-            </Popup>
+            {pin._id === active && (
+              <Popup
+                latitude={pin.lat}
+                longitude={pin.long}
+                closeButton={true}
+                closeOnClick={false}
+                onClose={() => setActive(null)}
+              >
+                <Card {...pin} />
+              </Popup>
+            )}
           </div>
         ))}
     </>

@@ -10,6 +10,10 @@ const Map = () => {
     zoom: 3,
   });
 
+  const mapClickHandler = (e) => {
+    console.log(e.lngLat);
+  };
+
   return (
     <div className="map-wrapper">
       <MapGL
@@ -20,6 +24,7 @@ const Map = () => {
         width="100%"
         height="100%"
         transitionDuration={20}
+        onClick={mapClickHandler}
       >
         <Markers zoom={viewport.zoom} />
       </MapGL>
