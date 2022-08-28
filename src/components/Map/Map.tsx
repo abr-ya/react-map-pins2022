@@ -2,16 +2,21 @@ import { useState } from "react";
 import MapGL from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Markers from "components/Markers/Markers";
+import { ICoord, IViewport } from "interfaces";
+import { getCoordFromE } from "utils";
 
 const Map = () => {
-  const [viewport, setViewport] = useState({
+  const [viewport, setViewport] = useState<IViewport>({
     latitude: 50,
     longitude: 17,
-    zoom: 3,
+    zoom: 4,
   });
+  const [newPin, setNewPin] = useState<ICoord | null>(null);
 
-  const mapClickHandler = (e) => {
-    console.log(e.lngLat);
+  const mapClickHandler = (e: any) => {
+    const newCoord = getCoordFromE(e);
+    console.log(newCoord);
+    setNewPin(newCoord);
   };
 
   return (
@@ -26,7 +31,8 @@ const Map = () => {
         transitionDuration={20}
         onClick={mapClickHandler}
       >
-        <Markers zoom={viewport.zoom} />
+        <Markers zoom={viewport.zoom} setViewport={setViewport} />
+        {newPin && <>11</>}
       </MapGL>
     </div>
   );

@@ -9,3 +9,14 @@ export interface IPin {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface IViewport {
+  latitude: number;
+  longitude: number;
+  zoom: number;
+}
+
+export interface ICoord {
+  lat: number;
+  long: number;
+}
