@@ -10,9 +10,12 @@ interface IMarker {
   clickHandler: (id: string) => void;
   doubleClickHandler: (id: string, coord: ICoord) => void;
   isMyPin?: boolean;
+  color?: string;
 }
 
-const Marker = ({ _id, latitude, longitude, zoom, clickHandler, doubleClickHandler, isMyPin }: IMarker) => {
+const Marker = ({ _id, latitude, longitude, zoom, clickHandler, doubleClickHandler, isMyPin, color }: IMarker) => {
+  const defaultColor = isMyPin ? "tomato" : "slateblue";
+
   return (
     <GLMarker
       latitude={latitude}
@@ -25,7 +28,7 @@ const Marker = ({ _id, latitude, longitude, zoom, clickHandler, doubleClickHandl
       <Place
         style={{
           fontSize: zoom * 7,
-          color: isMyPin ? "tomato" : "slateblue",
+          color: color ? color : defaultColor,
           cursor: "pointer",
         }}
       />

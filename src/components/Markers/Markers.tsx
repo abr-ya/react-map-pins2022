@@ -8,11 +8,12 @@ import Marker from "components/Marker/Marker";
 interface IMarker {
   zoom: number;
   setViewport: (view: IViewport) => void;
+  active: string | null;
+  setActive: (id: string | null) => void;
 }
 
-const Markers = ({ zoom, setViewport }: IMarker) => {
+const Markers = ({ zoom, setViewport, active, setActive }: IMarker) => {
   const [pins, setPins] = useState<IPin[]>([]);
-  const [active, setActive] = useState<string | null>(null);
 
   const getPins = async () => {
     const newPins: IPin[] = await getAllPins();

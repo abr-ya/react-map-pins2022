@@ -1,9 +1,12 @@
+/* eslint-disable react/jsx-no-target-blank */
 import { useState } from "react";
-import MapGL from "react-map-gl";
+import MapGL, { Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Markers from "components/Markers/Markers";
 import { ICoord, IViewport } from "interfaces";
 import { getCoordFromE } from "utils";
+import Marker from "components/Marker/Marker";
+import CardNew from "components/CardNew/CardNew";
 
 const Map = () => {
   const [viewport, setViewport] = useState<IViewport>({
@@ -11,9 +14,11 @@ const Map = () => {
     longitude: 17,
     zoom: 4,
   });
+  const [active, setActive] = useState<string | null>(null);
   const [newPin, setNewPin] = useState<ICoord | null>(null);
 
   const mapClickHandler = (e: any) => {
+    setActive("new");
     const newCoord = getCoordFromE(e);
     console.log(newCoord);
     setNewPin(newCoord);
@@ -31,8 +36,29 @@ const Map = () => {
         transitionDuration={20}
         onClick={mapClickHandler}
       >
-        <Markers zoom={viewport.zoom} setViewport={setViewport} />
-        {newPin && <>11</>}
+        <Markers zoom={viewport.zoom} setViewport={setViewport} active={active} setActive={setActive} />
+        {active === "new" && newPin && (
+          <>
+            <Marker
+              _id="new"
+              latitude={newPin.lat}
+              longitude={newPin.long}
+              zoom={viewport.zoom}
+              clickHandler={() => false}
+              doubleClickHandler={() => false}
+            />
+            <Popup
+              latitude={newPin.lat}
+              longitude={newPin.long}
+              closeButton={true}
+              closeOnClick={false}
+              onClose={() => setActive(null)}
+              anchor="top"
+            >
+              <CardNew lat={newPin.lat} long={newPin.long} />
+            </Popup>
+          </>
+        )}
       </MapGL>
     </div>
   );
