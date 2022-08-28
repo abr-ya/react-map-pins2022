@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Marker, Popup } from "react-map-gl";
-import { Place } from "@mui/icons-material";
+import { Popup } from "react-map-gl";
 import Card from "components/Card/Card";
 import { getAllPins } from "services/api";
 import { ICoord, IPin, IViewport } from "interfaces";
+import Marker from "components/Marker/Marker";
 
 interface IMarker {
   zoom: number;
@@ -42,21 +42,14 @@ const Markers = ({ zoom, setViewport }: IMarker) => {
         pins.map((pin: IPin) => (
           <div key={pin._id}>
             <Marker
+              _id={pin._id}
               latitude={pin.lat}
               longitude={pin.long}
-              offsetLeft={-3.5 * zoom}
-              offsetTop={-7 * zoom}
-              onClick={() => markerClickHandler(pin._id)}
-              onDoubleClick={() => markerDoubleClickHandler(pin._id, { lat: pin.lat, long: pin.long })}
-            >
-              <Place
-                style={{
-                  fontSize: zoom * 7,
-                  color: pin.username === "Jane" ? "tomato" : "slateblue",
-                  cursor: "pointer",
-                }}
-              />
-            </Marker>
+              zoom={zoom}
+              clickHandler={markerClickHandler}
+              doubleClickHandler={markerDoubleClickHandler}
+              isMyPin={pin.username === "Jane"}
+            />
             {pin._id === active && (
               <Popup
                 latitude={pin.lat}
