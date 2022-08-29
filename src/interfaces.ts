@@ -20,3 +20,11 @@ export interface ICoord {
   lat: number;
   long: number;
 }
+
+export interface ISubmitPinHandler {
+  title: string;
+  desc: string;
+  rating: number;
+}
+
+export interface ICreatePinPayload extends ISubmitPinHandler, ICoord {}

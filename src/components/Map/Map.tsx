@@ -1,14 +1,15 @@
 /* eslint-disable react/jsx-no-target-blank */
-import { useState } from "react";
-import MapGL, { Popup } from "react-map-gl";
+import { useState, MouseEvent } from "react";
+import MapGL, { MapEvent, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Markers from "components/Markers/Markers";
-import { ICoord, IViewport } from "interfaces";
+import { ICoord, ISubmitPinHandler, IViewport } from "interfaces";
 import { getCoordFromE } from "utils";
 import Marker from "components/Marker/Marker";
-import CardNew from "components/CardNew/CardNew";
+import CardNew from "components/CardNewPin/CardNewPin";
 
 const Map = () => {
+  const [username] = useState("Jane");
   const [viewport, setViewport] = useState<IViewport>({
     latitude: 50,
     longitude: 17,
@@ -17,11 +18,30 @@ const Map = () => {
   const [active, setActive] = useState<string | null>(null);
   const [newPin, setNewPin] = useState<ICoord | null>(null);
 
-  const mapClickHandler = (e: any) => {
-    setActive("new");
-    const newCoord = getCoordFromE(e);
-    console.log(newCoord);
-    setNewPin(newCoord);
+  const mapClickHandler = (e: MapEvent) => {
+    const element = e.target as HTMLElement;
+    // если клик по карте - не реагировать на клики в модалках, например
+    if (element.classList.contains("overlays")) {
+      setActive("new");
+      const newCoord = getCoordFromE(e);
+      console.log(newCoord);
+      setNewPin(newCoord);
+    }
+  };
+
+  const submitPinHandler = ({ title, desc, rating }: ISubmitPinHandler) => {
+    if (newPin) {
+      setActive(null);
+      setNewPin(null);
+      const payload = {
+        username,
+        title,
+        desc,
+        rating,
+        ...newPin,
+      };
+      console.log(payload);
+    }
   };
 
   return (
@@ -29,7 +49,7 @@ const Map = () => {
       <MapGL
         mapboxApiAccessToken={process.env.MAP_KEY}
         {...viewport}
-        onViewportChange={(next: any) => setViewport(next)}
+        onViewportChange={({ latitude, longitude, zoom }: any) => setViewport({ latitude, longitude, zoom })}
         mapStyle="mapbox://styles/mapbox/streets-v9"
         width="100%"
         height="100%"
@@ -55,7 +75,7 @@ const Map = () => {
               onClose={() => setActive(null)}
               anchor="top"
             >
-              <CardNew lat={newPin.lat} long={newPin.long} />
+              <CardNew lat={newPin.lat} long={newPin.long} submitPinHandler={submitPinHandler} />
             </Popup>
           </>
         )}
